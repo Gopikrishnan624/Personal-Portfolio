@@ -169,3 +169,33 @@
         console.error(error);
       });
   });
+
+  document.getElementById("contact-form").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Get form data
+    const formData = {
+      name: document.getElementById("name").value,
+      email: document.getElementById("email").value,
+      subject: document.getElementById("subject").value,
+      message: document.getElementById("message").value,
+    };
+
+    // Send data to the backend
+    fetch("http://localhost:3000/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        alert("Message sent successfully!"); // Show success message
+        console.log(data);
+      })
+      .catch((error) => {
+        alert("Failed to send message. Please try again."); // Show error message
+        console.error(error);
+      });
+  });

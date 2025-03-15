@@ -1,29 +1,26 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
-const cors = require("cors");
 const app = express();
 const PORT = 3000;
 
-app.use(cors());
+// Middleware to parse JSON
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-// Configure nodemailer with Mailtrap
+// Nodemailer configuration for Gmail
 const transporter = nodemailer.createTransport({
-  host: "smtp.mailtrap.io",
-  port: 2525,
+  service: "gmail",
   auth: {
-    user: "4afb61c8e7eb3c", // Replace with your Mailtrap credentials
-    pass: "9abe65b492b8cf", // Replace with your Mailtrap credentials
+    user: "gopikrishnan1175@gmail.com", // Replace with your Gmail address
+    pass: "Gopi060403", // Replace with your Gmail app password
   },
 });
 
-// Handle POST request to /send-email
+// Route to handle form submission
 app.post("/send-email", (req, res) => {
   const { name, email, subject, message } = req.body;
 
   const mailOptions = {
-    from: email, // Sender email
+    from: "your-email@gmail.com", // Sender email (must match the auth user)
     to: "gopikrishnan1175@gmail.com", // Receiver email
     subject: subject, // Email subject
     text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`, // Email body
@@ -32,9 +29,11 @@ app.post("/send-email", (req, res) => {
   // Send email
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return res.status(500).send(error.toString());
+      console.error("Error sending email:", error);
+      return res.status(500).send("Failed to send message. Please try again.");
     }
-    res.status(200).send("Message sent: " + info.response);
+    console.log("Message sent:", info.response);
+    res.status(200).send("Message sent successfully!");
   });
 });
 
