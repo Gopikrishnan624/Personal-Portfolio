@@ -152,7 +152,7 @@
     };
   
     // Send data to the backend
-    fetch("http://localhost:3000/send-email", {
+    fetch("https://personal-portfolio-ljsx.onrender.com/send-email", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
